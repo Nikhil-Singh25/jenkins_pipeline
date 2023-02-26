@@ -111,7 +111,7 @@ systemctl status jenkins | grep Active
     
     
 
-```bash
+``bash
 #!/bin/bash -xe
 
 APPLICATION=Jenkins-Beanstalk
