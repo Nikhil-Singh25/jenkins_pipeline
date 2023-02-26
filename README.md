@@ -76,7 +76,7 @@ systemctl status jenkins | grep Active
             
             1- Create IAM Role for the build Server
             
-            2- Create a secutiry group and Key Pair for Build server.
+            2- Create a secutiry group and Key Pair for Build server..
             
             3- Creating ************************& Configuring build server.************************
             
