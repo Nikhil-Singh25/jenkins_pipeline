@@ -1,45 +1,45 @@
 # Jenkins-AWS
 
-- **[1]** **Create an security group** **(Jenkins-Master)**
+**[1]** **Create an security group** **(Jenkins-Master)**
     
     →Inbound rule- Allow port 22(SSH),80(HTTP) & 443(HTTPs)
     
     →Outbount rule - All traffic
     
-- **[2]** **Create an EC2 instance**
-    - Create and EC2  Instance->`Jenkins-Master` & use AMI - ubuntu 22.2.0
-    - Create a Key pair(Save it to SSH into Jenkins-Master)
-    - Attached the previously created sceurity group(Jenkins-Master)
-    - Create an Elastic IP and attach to the EC2 Instance
-- **[3]** **Configure EC2 instance (Jenkins-Master)**
-    - → switch to super user `sudo su -`  &
-     → get updates `apt-get update` & upgrade the packages `apt-get upgrade -y`
+ **[2]** **Create an EC2 instance**</br>
+    - Create and EC2  Instance->`Jenkins-Master` & use AMI - ubuntu 22.2.0</br>
+    - Create a Key pair(Save it to SSH into Jenkins-Master)</br>
+    - Attached the previously created sceurity group(Jenkins-Master)</br>
+    - Create an Elastic IP and attach to the EC2 Instance</br></br>
+ **[3]** **Configure EC2 instance (Jenkins-Master)**</br>
+     → switch to super user `sudo su -`  &</br>
+     → get updates `apt-get update` & upgrade the packages `apt-get upgrade -y` </br>
         
-        ### **[1]** **Installing and Configuring jenkins :**
+##### [3.1] Installing and Configuring jenkins :
         
-        - Install java-17 → `apt install openjdk-17-jdk -y`
-            - Add Jenkins Repository to ubuntu system and install **Jenkins**
-        
-        ```bash
-        curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc &gt; /dev/null
-        ```
-        
-        ```bash
-        echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list &gt; /dev/null
-        ```
-        
-        ```bash
-        echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list &gt; /dev/null
-        ```
-        
-        ```bash
-        apt update
-        apt install jenkins -y
-        ```
-        
-        ```bash
-        systemctl status jenkins | grep Active
-        ```
+- Install java-17 → `apt install openjdk-17-jdk -y`
+- Add Jenkins Repository to ubuntu system and install **Jenkins**
+ 1.  Importing GPG Key, The GPG key verifies package integrity       
+ ```bash
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc &gt; /dev/null
+ ```
+2.  Importing GPG Key, The GPG key verifies package integrity        
+```bash
+ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list &gt; /dev/null
+```
+ 3. Add the Jenkins software repository to the source list and provide the authentication key       
+ ```bash
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list &gt; /dev/null
+```
+ 4. installing jenkins (Update the system repository one more time. Updating refreshes the cache and makes the system aware of the new Jenkins repository)      
+```bash
+ apt update
+ apt install jenkins -y
+ ```
+5. Check the running status of Jenkins        
+ ```bash
+systemctl status jenkins | grep Active
+```
         
         ### **[2] Installing & Configuring Nginx :**
         
