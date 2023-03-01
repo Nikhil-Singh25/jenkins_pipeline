@@ -82,11 +82,18 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins
 ## [4] Configuring Build Server (Jenkins-Slave)
             
 **[4.1] Create IAM Role for the build Server</br>**
-* asdfas
-            
-2- Create a secutiry group and Key Pair for Build server..
-            
-3- Creating & Configuring build server.
+1. Go to AWS Console -> Go to the IAM console and click on "Roles" in the left navigation menu.
+2. Click on the "Create role" button.
+3. Choose "AWS service" as the trusted entity and select "EC2" as the service that will use the role.
+4. Click on the "Next: Permissions" button. Search for the "AWS Elastic Beanstalk Full"
+5. (Optional) Add tags to the role for better organization and tracking & Click on the "Next: Review" button.
+6. Give the role a name and description, and review the policies attached to the rol & Click on the "Create role" button to create the role.
+7. Go to the EC2 console and select the Jenkins-Slave Ec2 instance.
+8. Click on the "Actions" button and select "Instance Settings" and then "Attach/Replace IAM Role" & Select the role you just created and click on the "Apply" button.
+9. Create a secutiry group and Key Pair for Build server save the private key to you local system.</br>
+    Security Group :</br>
+        **In bound rules**: Allow SSH (80) from SG Jenkins-Master created for Jenkins-Master server.</br>
+10. Create Jenkins-Slave EC2 instance with same config as Jenkins-Master add the IAM role and chhose existing Jenkins-Slave Security group.  
             
 4- Connecting Jenkins-Master & Jenkins-Slave
             
