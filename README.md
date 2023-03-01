@@ -18,28 +18,27 @@
         
 - Install java-17 → `apt install openjdk-17-jdk -y`
 - Add Jenkins Repository to ubuntu system and install **Jenkins**
- 1.  Importing GPG Key, The GPG key verifies package integrity       
+1.  Importing GPG Key, The GPG key verifies package integrity       
  ```bash
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc &gt; /dev/null
+ curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc &gt; /dev/null
  ```
 2.  Importing GPG Key, The GPG key verifies package integrity        
 ```bash
  echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list &gt; /dev/null
 ```
- 3. Add the Jenkins software repository to the source list and provide the authentication key       
+3. Add the Jenkins software repository to the source list and provide the authentication key       
  ```bash
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list &gt; /dev/null
 ```
- 4. installing jenkins (Update the system repository one more time. Updating refreshes the cache and makes the system aware of the new Jenkins repository)      
+4. installing jenkins (Update the system repository one more time. Updating refreshes the cache and makes the system aware of the new Jenkins repository)      
 ```bash
  apt update
  apt install jenkins -y
  ```
-5. Check the running status of Jenkins        
- ```bash
-systemctl status jenkins | grep Active
-```
-        
+ 5. Check the running status of Jenkins        
+   ```
+   systemctl status jenkins | grep Active
+   ```  
 ### [3.2] Installing & Configuring Nginx :
         
 - Install nginx 
@@ -70,7 +69,8 @@ systemctl status jenkins | grep Active
                         proxy_set_header X-Real-IP $remote_addr;
                     }
                 }
-                
+            
+ - These lines configure Nginx to act as a reverse proxy for Jenkins. The `upstream` block defines a group of servers that Nginx can proxy requests to, in this case only one server running on `127.0.0.1` on port `8080`. The `server` block defines a virtual server that listens on port `80 (HTTP)` and forwards requests to the Jenkins server defined In the `upstream` block. The `location` block defines how requests to the root URL (/) should be handled, by passing them on to the Jenkins server and setting some HTTP headers in the process.    
             
 - Run `nginx -t` to test the configuration file of the Nginx web server for syntax errors</br>
      When this command is executed, Nginx parses the configuration file and checks for any syntax errors or issues that might prevent Nginx from starting properly. If any errors are found, the command will print an error     message and exit with a non-zero status code.
@@ -79,9 +79,10 @@ systemctl status jenkins | grep Active
             
 - `systemctl reload nginx` → reload the configuration of the Nginx web server without stopping it.
         
-### [4] **Configuring Build Server (Jenkins-Slave)**
+## [4] Configuring Build Server (Jenkins-Slave)
             
-1- Create IAM Role for the build Server
+**[4.1] Create IAM Role for the build Server</br>**
+* asdfas
             
 2- Create a secutiry group and Key Pair for Build server..
             
@@ -89,7 +90,7 @@ systemctl status jenkins | grep Active
             
 4- Connecting Jenkins-Master & Jenkins-Slave
             
-**[5]** **Connect Jenkins with Webhooks.**
+## [5] Connect Jenkins with Webhooks.
 **What is a webhook?**      
 → A webhook is a way for an application or service to provide real-time information to another application or service. It is a simple event-notification mechanism that sends data to a URL (also known as a webhook endpoint) when a particular event occurs.When an event occurs in the source application, the application will generate a message that contains information about the event and sends it to the webhook endpoint. The receiving application can then process the message and use the information to take further actions or trigger additional events.
         
