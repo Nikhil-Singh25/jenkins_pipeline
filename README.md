@@ -1,21 +1,20 @@
 # Jenkins-AWS
 
-**[1]** **Create an security group** **(Jenkins-Master)**
+## **[1]** **Create an security group** **(Jenkins-Master)**
     
-    →Inbound rule- Allow port 22(SSH),80(HTTP) & 443(HTTPs)
+   * Inbound rule- Allow port 22(SSH),80(HTTP) & 443(HTTPs)</br>
+   * Outbount rule - All traffic
     
-    →Outbount rule - All traffic
-    
- **[2]** **Create an EC2 instance**</br>
-    - Create and EC2  Instance->`Jenkins-Master` & use AMI - ubuntu 22.2.0</br>
-    - Create a Key pair(Save it to SSH into Jenkins-Master)</br>
-    - Attached the previously created sceurity group(Jenkins-Master)</br>
-    - Create an Elastic IP and attach to the EC2 Instance</br></br>
- **[3]** **Configure EC2 instance (Jenkins-Master)**</br>
+ ## **[2]** **Create an EC2 instance**(Jenkins-Master)
+   - Create and EC2  Instance->`Jenkins-Master` & use AMI - ubuntu 22.2.0</br>
+   - Create a Key pair(Save it in you local machine to SSH into Jenkins-Master Server)</br>
+   - Attached the previously created sceurity group(Jenkins-Master)</br>
+   - Create an Elastic IP and attach to the EC2 Instance</br></br>
+ ## [3] **Configure EC2 instance (Jenkins-Master)**</br>
      → switch to super user `sudo su -`  &</br>
      → get updates `apt-get update` & upgrade the packages `apt-get upgrade -y` </br>
         
-##### [3.1] Installing and Configuring jenkins :
+### [3.1] Installing and Configuring jenkins :
         
 - Install java-17 → `apt install openjdk-17-jdk -y`
 - Add Jenkins Repository to ubuntu system and install **Jenkins**
@@ -41,17 +40,25 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins
 systemctl status jenkins | grep Active
 ```
         
-##### **[3.2] Installing & Configuring Nginx :**
+### [3.2] Installing & Configuring Nginx :
         
-- Install nginx : `apt install nginx -y`
-- `unlink /etc/nginx/sites-enabled/default` →removes the default configuration file for Nginx, which is stored in the `/etc/nginx/sites-enabled` ****directory
-- `vim /etc/nginx/conf.d/jenkins.conf` → This command opens the Vim text editor and creates a new configuration file for Nginx, specifically for Jenkins. This file will be stored in the **`/etc/nginx/conf.d`**
- directory.
-→ In Vim, the following lines are added to the configuration file:
-            
-            ```bash
-            upstream jenkins {
-                    server 127.0.0.1:8080;
+- Install nginx 
+    ```
+    apt install nginx -y
+    ```
+- remove the default configuration file for Nginx, which is stored in the `/etc/nginx/sites-enabled` directory use command:
+    ```
+    unlink /etc/nginx/sites-enabled/default
+    ```
+- open the Vim text editor and creates a new configuration file for Nginx, specifically for Jenkins.
+    ```
+    vim /etc/nginx/conf.d/jenkins.conf
+    ```   
+    This file will be stored in the `/etc/nginx/conf.d`directory.
+- using Vim, add the following lines to the configuration file:
+               
+               upstream jenkins {
+               server 127.0.0.1:8080;
                 }
             
                 server {
@@ -63,12 +70,12 @@ systemctl status jenkins | grep Active
                         proxy_set_header X-Real-IP $remote_addr;
                     }
                 }
-            ```
+                
             
-- `nginx -t` →  Test the configuration file of the Nginx web server for syntax errors
-                         → When this command is executed, Nginx parses the configuration file and checks for any syntax errors or issues that might prevent Nginx from starting properly. If any errors are found, the command will print an error     message and exit with a non-zero status code.
+- Run `nginx -t` to test the configuration file of the Nginx web server for syntax errors</br>
+     When this command is executed, Nginx parses the configuration file and checks for any syntax errors or issues that might prevent Nginx from starting properly. If any errors are found, the command will print an error     message and exit with a non-zero status code.
             
-![Untitled](Jenkins-AWS%203683dc75bf734895ad814002410185bf/Untitled.png)
+    ![ngin -t result](https://github.com/Nikhil-Singh25/Images_logos/blob/main/Untitled.png)
             
 - `systemctl reload nginx` → reload the configuration of the Nginx web server without stopping it.
         
