@@ -81,22 +81,31 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins
         
 ## [4] Configuring Build Server (Jenkins-Slave)
             
-**[4.1] Create IAM Role for the build Server</br>**
-1. Go to AWS Console -> Go to the IAM console and click on "Roles" in the left navigation menu.
-2. Click on the "Create role" button.
-3. Choose "AWS service" as the trusted entity and select "EC2" as the service that will use the role.
-4. Click on the "Next: Permissions" button. Search for the "AWS Elastic Beanstalk Full"
-5. (Optional) Add tags to the role for better organization and tracking & Click on the "Next: Review" button.
+**[4.1] Creating IAM role, Security group and Key pair for build-Server  </br>**
+1. AWS Console → IAM console → "Roles" (in left navigation menu).
+2. Click "Create role" button.
+3. Choose "AWS service" as the trusted entity → "EC2" as the service that will use the role.
+4. Click on "Next: Permissions" button. Search for the "AWS Elastic Beanstalk Full" it will give full access to the build-server.
+5. (Optional) Add tags to the role for better organization and tracking → Click on "Next: Review" button.
 6. Give the role a name and description, and review the policies attached to the rol & Click on the "Create role" button to create the role.
 7. Go to the EC2 console and select the Jenkins-Slave Ec2 instance.
 8. Click on the "Actions" button and select "Instance Settings" and then "Attach/Replace IAM Role" & Select the role you just created and click on the "Apply" button.
 9. Create a secutiry group and Key Pair for Build server save the private key to you local system.</br>
     Security Group :</br>
         **In bound rules**: Allow SSH (80) from SG Jenkins-Master created for Jenkins-Master server.</br>
-10. Create Jenkins-Slave EC2 instance with same config as Jenkins-Master add the IAM role and chhose existing Jenkins-Slave Security group.  
+10. Create Jenkins-Slave EC2 instance with same configuration as Jenkins-Master add the IAM role choose Jenkins-Slave SG and Create a new key pair and save the .pem file.  
+
+**[4.2]FConnecting Jenkins-Master & Jenkins-Slave</br>**
+1. Start the jenkins-build server   
             
-4- Connecting Jenkins-Master & Jenkins-Slave
             
+            
+            
+            
+            
+            
+            
+         
 ## [5] Connect Jenkins with Webhooks.
 **What is a webhook?**      
 → A webhook is a way for an application or service to provide real-time information to another application or service. It is a simple event-notification mechanism that sends data to a URL (also known as a webhook endpoint) when a particular event occurs.When an event occurs in the source application, the application will generate a message that contains information about the event and sends it to the webhook endpoint. The receiving application can then process the message and use the information to take further actions or trigger additional events.
@@ -117,13 +126,24 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins
 - go to : settings → webhooks → add webhook → paste the DNS link of Jenkins-Master add `github-webhook/` at the end of url 
 → This url is endpoint in our jenkins server which will handle the webhook events(here,any update on github repo)
     
-Now make some changed in your README.md file and commit to github, you webhook-test jobshouldautomatically run
+Now make some changed in your README.md file and commit to github, you webhook-test job sould automatically run
     
 it should look like this→ [http://ec2-43-205-2-42.ap-south-1.compute.amazonaws.com/github-webhook/](http://ec2-43-205-2-42.ap-south-1.compute.amazonaws.com/github-webhook/)
     
 - **[6]** **Deployment to Elastic Beanstalk**
     
-    
+    → Go to AWS Beanstalk console create a new Beanstalk application and name it `Jenkins-Beanstalk`
+
+    → Create a Jenkins freestyle job:
+
+    → General : Add the github url in github project .
+
+    → Source Code Management : check- Git → **Repository URL** : add the url of  repo & change **Branch Specifier** : */main accordingly.
+         In additional behaviours select **Check out to specific local branch**
+
+    → Build Triggers : **GitHub hook trigger for GITScm polling**
+
+    → Build Steps :  add the below code in the **command** and save
 
 ```bash
 #!/bin/bash -xe
@@ -150,4 +170,4 @@ eb health
 eb status
 ```
 
-
+→ Check your aws beanstalk console for environement updation you make chenges to the webapp file to see noticeable changes or can check the job console where the commit message can also confirm that everything is fine!
