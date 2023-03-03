@@ -92,20 +92,37 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins
 8. Click on the "Actions" button and select "Instance Settings" and then "Attach/Replace IAM Role" & Select the role you just created and click on the "Apply" button.
 9. Create a secutiry group and Key Pair for Build server save the private key to you local system.</br>
     Security Group :</br>
-        **In bound rules**: Allow SSH (80) from SG Jenkins-Master created for Jenkins-Master server.</br>
+        **In bound rules**: Allow SSH (80) from SG Jenkins-Master created for Jenkins-Master server & Allow  SSH from 0.0.0.0/0 .</br>
 10. Create Jenkins-Slave EC2 instance with same configuration as Jenkins-Master add the IAM role choose Jenkins-Slave SG and Create a new key pair and save the .pem file.  
 
 **[4.2]FConnecting Jenkins-Master & Jenkins-Slave</br>**
-1. Start the jenkins-build server   
-            
-            
-            
-            
-            
-            
-            
-            
-         
+1. Start the jenkins-build server and connect using SSH and run following commands:
+```bash
+#!/bin/bash
+#install dependecies 
+yum -y group install "Development Tools"
+yum -y install bzip2-devel.x86_64
+yum -y install openjdk-17-jdk -y
+yum -y install libffi-devel
+yum -y install ncurses-devel
+yum -y install openssl-devel
+yum -y install python3
+yum -y install readline-devel.x86_64
+yum -y install sqlite-devel.x86_64
+yum -y install zlib-devel
+
+curl -0 https://bootstrap,pypa,io/get-pip.py
+/usr/bin.python get-pip,py
+/usr/local/bin/pip3 install awsebcli
+```
+→ The above commands can be used in user data so that when the build-server boots up everything is ready automatically.
+2. Open Jenkins(Jenkins-Master) → (left menu) 'Build Executor Status'</br>
+3. Follow the below step to create a new node:</br>
+    1. Click on "Build Executors status"
+        ![jen1](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/fb0e2709-0dd0-4112-a2af-9dc38d5faa26/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230303%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230303T225015Z&X-Amz-Expires=86400&X-Amz-Signature=a32d51812371903c9ded9e2d77e93ff098b0de63eb9d4ebc5acd345077302758&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject)
+
+2. Copy the private Ipv4 address of jenkins-master server
+
 ## [5] Connect Jenkins with Webhooks.
 **What is a webhook?**      
 → A webhook is a way for an application or service to provide real-time information to another application or service. It is a simple event-notification mechanism that sends data to a URL (also known as a webhook endpoint) when a particular event occurs.When an event occurs in the source application, the application will generate a message that contains information about the event and sends it to the webhook endpoint. The receiving application can then process the message and use the information to take further actions or trigger additional events.
